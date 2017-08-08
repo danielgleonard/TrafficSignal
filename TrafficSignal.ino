@@ -2,6 +2,8 @@ boolean lights[(byte)3];
 
 void setup() {
     allState(false);
+    pinMode(2, OUTPUT);
+    digitalWrite(2, LOW);
 }
 
 void loop() {
