@@ -1,13 +1,24 @@
-void setup()
-{
+boolean[] lights = new boolean[3];
 
-  /* add setup code here */
+void setup() {
 
 }
 
-void loop()
-{
+void loop() {
+  switch (light) {
 
-  /* add main program code here */
+  }
+}
 
+boolean getState(byte light) {
+  switch (light) {
+    case 0:
+      return red;
+    case 1:
+      return yellow;
+    case 2:
+      return green;
+    default:
+      return false;
+  }
 }
