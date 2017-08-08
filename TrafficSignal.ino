@@ -1,24 +1,27 @@
-boolean[] lights = new boolean[3];
+boolean lights[(byte)3];
 
 void setup() {
-
+    allState(false);
 }
 
 void loop() {
-  switch (light) {
-
-  }
+    
 }
 
 boolean getState(byte light) {
-  switch (light) {
-    case 0:
-      return red;
-    case 1:
-      return yellow;
-    case 2:
-      return green;
-    default:
-      return false;
-  }
+    return lights[light];
+}
+
+void toggleState(byte light) {
+    setState(light, !getState(light));
+}
+
+void allState(boolean state) {
+    for (int i = 0; i < 3; i++) {
+        setState(i, false);
+    }
+}
+
+void setState(byte light, boolean state) {
+
 }
