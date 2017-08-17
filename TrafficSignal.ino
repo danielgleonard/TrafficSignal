@@ -1,13 +1,22 @@
 boolean lights[(byte)3];
+byte green = 0;
+byte yellow = 1;
+byte red = 2;
 
 void setup() {
+    pinMode(2, OUTPUT); //green
+    pinMode(3, OUTPUT); //yellow
+    pinMode(4, OUTPUT); //red
     allState(false);
-    pinMode(2, OUTPUT);
-    digitalWrite(2, LOW);
 }
 
 void loop() {
-    
+    toggleState(red);
+    delay(500);
+    toggleState(yellow);
+    delay(500);
+    toggleState(green);
+    delay(500);
 }
 
 boolean getState(byte light) {
@@ -25,5 +34,13 @@ void allState(boolean state) {
 }
 
 void setState(byte light, boolean state) {
+    if (state) {
+        digitalWrite(light + 2, HIGH);
+    }
+    else
+    {
+        digitalWrite(light + 2, LOW);
+    }
 
+    lights[light] = state;
 }
