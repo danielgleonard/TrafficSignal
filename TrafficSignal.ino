@@ -1,22 +1,24 @@
 boolean lights[(byte)3];
-byte green = 0;
-byte yellow = 1;
-byte red = 2;
+const byte green = 0;
+const byte yellow = 1;
+const byte red = 2;
 
 void setup() {
     pinMode(2, OUTPUT); //green
     pinMode(3, OUTPUT); //yellow
     pinMode(4, OUTPUT); //red
+    
     allState(false);
 }
 
 void loop() {
-  marquee(false, 250);
+  randomLight(250);
 }
 
-void randomLight() {
+void randomLight(int delayTime) {
   byte randomNumber = random(3);
   toggleState(randomNumber);
+  delay(delayTime);
 }
 
 void marquee(boolean up, int delayTime) {
@@ -53,11 +55,11 @@ void allState(boolean state) {
 
 void setState(byte light, boolean state) {
     if (state) {
-        digitalWrite(light + 2, HIGH);
+        digitalWrite(light + 2, LOW);
     }
     else
     {
-        digitalWrite(light + 2, LOW);
+        digitalWrite(light + 2, HIGH);
     }
 
     lights[light] = state;
