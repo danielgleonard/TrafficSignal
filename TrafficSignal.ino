@@ -11,10 +11,11 @@ void setup() {
 }
 
 void loop() {
+  marquee(false, 250);
 }
 
 void randomLight() {
-  randomNumber = random(3);
+  byte randomNumber = random(3);
   toggleState(randomNumber);
 }
 
