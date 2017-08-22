@@ -11,12 +11,29 @@ void setup() {
 }
 
 void loop() {
-    toggleState(red);
-    delay(500);
-    toggleState(yellow);
-    delay(500);
+}
+
+void randomLight() {
+  randomNumber = random(3);
+  toggleState(randomNumber);
+}
+
+void marquee(boolean up, int delayTime) {
+  if (up) {
     toggleState(green);
-    delay(500);
+    delay(delayTime);
+    toggleState(yellow);
+    delay(delayTime);
+    toggleState(red);
+    delay(delayTime);
+  } else {
+    toggleState(red);
+    delay(delayTime);
+    toggleState(yellow);
+    delay(delayTime);
+    toggleState(green);
+    delay(delayTime);
+  }
 }
 
 boolean getState(byte light) {
