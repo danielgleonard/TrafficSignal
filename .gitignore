@@ -1,5 +1,13 @@
 #########################
+## Project-related
+#########################
+
+# Ignore file of wifi passwords
+network_info.h
+
+#########################
 ## Visual Studio Code
 #########################
 
 .vscode/
+
