@@ -13,6 +13,6 @@ class Light {
     void setState(bool powerState);
 
     bool getState() { return state; }
-}
+};
 
 #endif
