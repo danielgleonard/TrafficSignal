@@ -6,11 +6,13 @@
 
 char net_ssid[] = "";       // your network SSID (name)
 
-// WEP
-char key[] = "";            // your network key
-int keyIndex = 0;           // your network key Index number
-
-// WPA2 Personal
-char net_password[] = "";   // your network password
+#if NETWORK_TYPE == 1
+  // WEP
+  char net_key[] = "";        // your network key
+  int net_keyIndex = 0;       // your network key Index number
+#elif NETWORK_TYPE == 2
+  // WPA2 Personal
+  char net_password[] = "";   // your network password
+#endif
 
 #endif

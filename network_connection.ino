@@ -22,13 +22,21 @@ bool connectWifi() {
      * using #if directives to save space on microcontroller
      */
 #if NETWORK_TYPE == 0
-
+    // attempt to connect to Wifi network:
+    while (status != WL_CONNECTED) {
+      Serial.print("Attempting to connect to open network, SSID: ");
+      Serial.println(net_ssid);
+      status = WiFi.begin(net_ssid);
+  
+      // wait 10 seconds for connection:
+      delay(10000);
+    }
 #elif NETWORK_TYPE == 1
     // attempt to connect to Wifi network:
     while (status != WL_CONNECTED) {
       Serial.print("Attempting to connect to WEP network, SSID: ");
-      Serial.println(ssid);
-      status = WiFi.begin(ssid, keyIndex, key);
+      Serial.println(net_ssid);
+      status = WiFi.begin(net_ssid, net_keyIndex, net_key);
   
       // wait 10 seconds for connection:
       delay(10000);
@@ -36,10 +44,9 @@ bool connectWifi() {
 #elif NETWORK_TYPE == 2
     // attempt to connect to Wifi network:
     while (status != WL_CONNECTED) {
-      Serial.print("Attempting to connect to SSID: ");
-      Serial.println(ssid);
-      // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-      status = WiFi.begin(ssid, pass);
+      Serial.print("Attempting to connect to WPA2 Personal network, SSID: ");
+      Serial.println(net_ssid);
+      status = WiFi.begin(net_ssid, net_password);
   
       // wait 10 seconds for connection:
       delay(10000);
