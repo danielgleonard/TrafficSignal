@@ -10,54 +10,54 @@ bool connectWifi() {
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
     return false;
-  } else {
-    String fv = WiFi.firmwareVersion();
-    if (fv != "1.1.0") {
-      Serial.println("Please upgrade the firmware");
-    }
-
-    /*
-     * Connect to network
-     * Performs different procedure based on NETWORK_TYPE
-     * using #if directives to save space on microcontroller
-     */
-#if NETWORK_TYPE == 0
-    // attempt to connect to Wifi network:
-    while (status != WL_CONNECTED) {
-      Serial.print("Attempting to connect to open network, SSID: ");
-      Serial.println(net_ssid);
-      status = WiFi.begin(net_ssid);
-  
-      // wait 10 seconds for connection:
-      delay(10000);
-    }
-#elif NETWORK_TYPE == 1
-    // attempt to connect to Wifi network:
-    while (status != WL_CONNECTED) {
-      Serial.print("Attempting to connect to WEP network, SSID: ");
-      Serial.println(net_ssid);
-      status = WiFi.begin(net_ssid, net_keyIndex, net_key);
-  
-      // wait 10 seconds for connection:
-      delay(10000);
-    }
-#elif NETWORK_TYPE == 2
-    // attempt to connect to Wifi network:
-    while (status != WL_CONNECTED) {
-      Serial.print("Attempting to connect to WPA2 Personal network, SSID: ");
-      Serial.println(net_ssid);
-      status = WiFi.begin(net_ssid, net_password);
-  
-      // wait 10 seconds for connection:
-      delay(10000);
-    }
-    server.begin();
-    // you're connected now, so print out the status:
-    printWifiStatus();      
-#else
-    return false;
-#endif
   }
+  String fv = WiFi.firmwareVersion();
+  if (fv != "1.1.0") {
+    Serial.println("Please upgrade the firmware");
+  }
+
+  /*
+   * Connect to network
+   * Performs different procedure based on NETWORK_TYPE
+   * using #if directives to save space on microcontroller
+   */
+#if NETWORK_TYPE == 0
+  // attempt to connect to Wifi network:
+  while (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to open network, SSID: ");
+    Serial.println(net_ssid);
+    status = WiFi.begin(net_ssid);
+
+    // wait 10 seconds for connection:
+    delay(10000);
+  }
+#elif NETWORK_TYPE == 1
+  // attempt to connect to Wifi network:
+  while (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to WEP network, SSID: ");
+    Serial.println(net_ssid);
+    status = WiFi.begin(net_ssid, net_keyIndex, net_key);
+
+    // wait 10 seconds for connection:
+    delay(10000);
+  }
+#elif NETWORK_TYPE == 2
+  // attempt to connect to Wifi network:
+  while (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to WPA2 Personal network, SSID: ");
+    Serial.println(net_ssid);
+    status = WiFi.begin(net_ssid, net_password);
+
+    // wait 10 seconds for connection:
+    delay(10000);
+  }
+#else
+  Serial.println("Unknown network type, connection failed");
+  return false;
+#endif
+
+  server.begin();
+  return true;
 }
 
 void printWifiStatus() {

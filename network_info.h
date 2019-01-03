@@ -1,3 +1,12 @@
+/*
+ * This header file allows you to change WiFi settings independently
+ * of the main codebase. If you intend to make changes to the main
+ * codebase while using this file as part of a working project or
+ * in debugging, you can make Git ignore this file in committing with
+ * 
+ *     git update-index --skip-worktree network_info.h
+ */
+
 #ifndef NETWORK_INFO_H
 #define NETWORK_INFO_H
 
