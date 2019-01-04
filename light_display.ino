@@ -30,12 +30,7 @@ void lightDispPatternMarquee(boolean up, int delayTime) {
   }
 }
 
-boolean lightDispGetState(uint8_t light) {
-    //return lights[light];
-    return false;
-}
-
-void lightDispToggleState(uint8_t light) {
+void lightDispToggleState(Light light) {
     lightDispSetState(light, !lightDispGetState(light));
 }
 
@@ -43,17 +38,4 @@ void lightDispAllState(boolean state) {
     for (int i = 0; i < 3; i++) {
         lightDispSetState(i, false);
     }
-}
-
-void lightDispSetState(uint8_t light, boolean state) {
-    if (state) {
-        digitalWrite(light + 2, LOW);
-    }
-    else
-    {
-        digitalWrite(light + 2, HIGH);
-    }
-/*
-    lights[light] = state;
-    */
 }
