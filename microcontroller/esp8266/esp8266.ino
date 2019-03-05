@@ -1,14 +1,9 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiClient.h>
+#include 
 
 #define DEBUG true
-
-// Hardcode WiFi parameters as this isn't going to be moving around.
-const char* domain = "esp8266-light";
-const char* ssid = "abwifi";
-const char* password = "ABASMASB1234";
-const int   port  = 5045;
 
 // Start a TCP Server on port 5045
 WiFiServer server(port);
