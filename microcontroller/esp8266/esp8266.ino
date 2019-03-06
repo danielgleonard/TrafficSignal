@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiClient.h>
-#include 
+#include "settings.h"
 
 #define DEBUG true
 
@@ -21,13 +21,17 @@ void setup()
   // - second argument is the IP address to advertise
   //   we send our IP address on the WiFi network
   if (!MDNS.begin(domain)) {
+#if DEBUG
     Serial.println("Error setting up MDNS responder!");
+#endif
     while (1) {
       delay(1000);
     }
   }
+#if DEBUG
   Serial.println("mDNS responder started");
   Serial.println(domain);
+#endif
 
   server.begin();
   
@@ -37,13 +41,14 @@ void setup()
 
 void loop() 
 {
-    MDNS.update();
-    
-    if (!client.connected()) {
-        // try to connect to a new client
-        client = server.available();
-    } else {
-        // read string from the connected client
+  MDNS.update();
+  
+  if (!client.connected()) {
+      // try to connect to a new client
+      client = server.available();
+  } else {
+      // read string from the connected client
+      if (client.available() > 0) {
         while (client.available() > 0) {
 #if DEBUG
           Serial.print("Incoming characters: ");
@@ -76,13 +81,64 @@ void loop()
             Serial.print("Current understanding of line: ");
             Serial.println(msg_in);
 #endif
-          }
         }
+      }
+      client.print(domain);
+      client.print('>');
+      client.print('\027');
     }
+  }
 }
 
 void readCommand(String command)
 {
+  String command_arg = "";
+  
+  command.trim();
+
+  if (command.indexOf(' ') == -1) {
+    command_arg = command;
+  } else {
+    command_arg = command.substring(0, command.indexOf(' '));
+  }
+  command_arg.toLowerCase();
+  
+  if (command_arg.equals("help")) {
+    
+#if DEBUG
+    Serial.println("Received command \"help\". Sending help to client.");
+#endif
+    client.println("TrafficLight v2 by Dan Leonard.\r\nAvailable commands:\r\n\tesp   [args]   -- send command [args] to WiFi board\r\n\tlight [args]   -- send command [args] to traffic light Arduino");
+
+  } else if (command_arg.equals("esp")) {
+#if DEBUG
+    Serial.println("Received command \"esp\". Interpreting rest of command.");
+#endif
+
+  } else if (command_arg.equals("light")) {
+#if DEBUG
+    Serial.println("Received command \"light\". Sending onwards.");
+#endif
+    
+    // SEND TO SERIAL
+    String command_light = command.substring(command.indexOf(' ') + 1);
+    Serial.println("client:" + '\002' + command_light + '\003');
+    
+  } else {
+#if DEBUG
+    Serial.print("Unknown command. Received: ");
+    Serial.println(command);
+    Serial.print("Understood as: ");
+    Serial.println(command_arg);
+#endif
+    client.print("Unknown command: ");
+    client.println(command_arg);
+    client.println("Send command \"help\" for help");
+  }
+    
+  return;
+
+/*
   if (command.substring(0,3).equalsIgnoreCase("set")) {
 #if DEBUG
     Serial.println("Received command \"set\"");
@@ -163,6 +219,7 @@ void readCommand(String command)
       return;
     }
   }
+  */
 }
 
 void setupWiFi()
@@ -171,10 +228,14 @@ void setupWiFi()
   //Wait for connection
   while(WiFi.status() != WL_CONNECTED) {
     delay(500);
+#if DEBUG
     Serial.print(".");
+#endif
   }
+#if DEBUG
   Serial.print("Connected to "); Serial.println(ssid);
   Serial.print("IP Address: "); Serial.println(WiFi.localIP());
+#endif
 }
 
 void initHardware()
