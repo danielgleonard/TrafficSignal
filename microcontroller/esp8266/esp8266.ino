@@ -2,6 +2,7 @@
 #include <ESP8266mDNS.h>
 #include <WiFiClient.h>
 #include "settings.h"
+#include "CommandParser.h"
 
 #define DEBUG true
 
@@ -43,6 +44,10 @@ void loop()
 {
   MDNS.update();
   
+  readFromClient();
+}
+
+void readFromClient() {
   if (!client.connected()) {
       // try to connect to a new client
       client = server.available();
@@ -59,7 +64,7 @@ void loop()
 #if DEBUG
             Serial.println("Received newline");
 #endif
-            readCommand(msg_in);
+            parseCommand(msg_in);
             //char buf[msg_in.length()];
             //msg_in.toCharArray(buf, msg_in.length());
 #if DEBUG
@@ -90,7 +95,7 @@ void loop()
   }
 }
 
-void readCommand(String command)
+void parseCommand(String command)
 {
   String command_arg = "";
   
