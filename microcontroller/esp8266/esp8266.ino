@@ -48,6 +48,7 @@ void loop()
 }
 
 void readFromClient() {
+//  Message msg;
   if (!client.connected()) {
       // try to connect to a new client
       client = server.available();
@@ -64,7 +65,7 @@ void readFromClient() {
 #if DEBUG
             Serial.println("Received newline");
 #endif
-            parseCommand(msg_in);
+            msg = Message(msg_in);
             //char buf[msg_in.length()];
             //msg_in.toCharArray(buf, msg_in.length());
 #if DEBUG
@@ -95,6 +96,7 @@ void readFromClient() {
   }
 }
 
+/*
 void parseCommand(String command)
 {
   String command_arg = "";
@@ -142,6 +144,7 @@ void parseCommand(String command)
   }
     
   return;
+*/
 
 /*
   if (command.substring(0,3).equalsIgnoreCase("set")) {
@@ -226,6 +229,21 @@ void parseCommand(String command)
   }
   */
 }
+
+/**
+ * \param command The command to be parsed
+ * \param source  true = client, false = light controller
+ */
+/*
+void command_parse(String command, bool source) {
+  if (source) {
+    
+  } else {
+    
+  }
+  return;
+}
+*/
 
 void setupWiFi()
 {
