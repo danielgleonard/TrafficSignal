@@ -20,3 +20,7 @@ void Light::setState(bool powerState) {
     state = powerState;
   }
 }
+
+bool Light::getState() {
+  return state;
+}

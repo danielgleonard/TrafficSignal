@@ -1,4 +1,4 @@
-
+/*
 void lightDispTest() {
   lightDispAllState(true);
   delay(100);
@@ -39,3 +39,5 @@ void lightDispAllState(boolean state) {
         lightDispSetState(i, false);
     }
 }
+
+*/

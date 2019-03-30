@@ -12,7 +12,7 @@ class Light {
 
     void setState(bool powerState);
 
-    bool getState() { return state; }
+    bool getState();
 };
 
 #endif
