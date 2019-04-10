@@ -1,6 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiClient.h>
+#include <WiFiUdp.h>
+#include <NTPClient.h>
 #include "settings.h"
 //#include "CommandParser.h"
 
@@ -10,10 +12,21 @@
 WiFiServer server(port);
 WiFiClient client;
 
+// NTP Settings
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "time.illinois.edu", -18000L, 172800000UL);
+
+// vars for message storage
+char messageWiFiIn[40];
+char messageWiFiOut[40];
+char messageSerialIn[40];
+char messageSerialOut[40];
+
 void setup() 
 {
   initHardware();
   setupWiFi();
+  timeClient.begin();
   
   if (!MDNS.begin(domain)) {
 #if DEBUG
@@ -36,7 +49,9 @@ void setup()
 
 void loop() 
 {
+  timeClient.update();
   MDNS.update();
+  
   if (!client.connected()) {
     client = server.available();
     digitalWrite(0,LOW);
@@ -76,5 +91,5 @@ void initHardware()
 {
   // LED on-board
   pinMode(0, OUTPUT);
-  Serial.begin(115200);
+  Serial.begin(57600);
 }

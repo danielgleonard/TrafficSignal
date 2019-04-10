@@ -11,7 +11,7 @@ void setup() {
   lightRed    = new Light(4);
   */
   
-  Serial.begin(115200);
+  Serial.begin(57600);
   
   // Send test pattern
 //  lightDispTest();
