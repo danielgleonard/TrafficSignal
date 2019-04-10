@@ -7,6 +7,7 @@
 //#include "CommandParser.h"
 
 #define DEBUG true
+#define MESSAGE_SIZE 32
 
 // Start a TCP Server on port 5045
 WiFiServer server(port);
@@ -17,17 +18,17 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "time.illinois.edu", -18000L, 172800000UL);
 
 // vars for message storage
-char messageWiFiIn[40];
-char messageWiFiOut[40];
-char messageSerialIn[40];
-char messageSerialOut[40];
+char messageWiFiIn[MESSAGE_SIZE];
+char messageWiFiOut[MESSAGE_SIZE];
+char messageSerialIn[MESSAGE_SIZE];
+char messageSerialOut[MESSAGE_SIZE];
 
-void setup() 
+void setup()
 {
   initHardware();
   setupWiFi();
   timeClient.begin();
-  
+
   if (!MDNS.begin(domain)) {
 #if DEBUG
     Serial.println("Error setting up MDNS responder!");
@@ -42,21 +43,23 @@ void setup()
 #endif
 
   server.begin();
-  
+
   // Add service to MDNS-SD
   MDNS.addService("raw", "tcp", port);
 }
 
-void loop() 
+void loop()
 {
   timeClient.update();
   MDNS.update();
-  
+
   if (!client.connected()) {
     client = server.available();
     digitalWrite(0,LOW);
   } else {
     digitalWrite(0,HIGH);
+    readMessages();
+
     while (client.available() > 0) {
       // Read incoming message
       char inChar = client.read();
@@ -68,6 +71,24 @@ void loop()
       client.write(outChar);
     }
   }
+}
+
+void readMessage()
+{
+
+	// Read message from TCP/IP
+	while (client.available() > 0) {
+		char inChar = client.read();
+		int i = 0;
+
+		while (inChar != '\r' && inChar != '\n' && strlen(messageWiFiIn) < sizeof(messageWiFiIn) - 1) {
+			messageWiFiIn[i] = inChar;
+			i++;
+			inChar = client.read();
+		}
+		if (strlen(messageWiFiIn) == sizeof(messageWiFiIn) - 1) {
+		}
+	}
 }
 
 void setupWiFi()

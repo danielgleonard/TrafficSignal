@@ -5,6 +5,6 @@
 const char* domain = "";
 const char* ssid = "";
 const char* password = "";
-const int   port  = ;
+const int   port = 100;
 
 #endif
