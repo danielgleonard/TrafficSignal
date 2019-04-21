@@ -87,6 +87,8 @@ bool readMessages()
   if (client.available() > 0) {
     memset(messageWiFiIn,0,sizeof(messageWiFiIn));
     memset(messageSerialIn,0,sizeof(messageSerialIn));
+    memset(messageWiFiOut,0,sizeof(messageWiFiOut));
+    memset(messageSerialOut,0,sizeof(messageSerialOut));
     
 #if DEBUG
     Serial.write("client.availabile: ");
@@ -126,6 +128,8 @@ bool readMessages()
   if (Serial.available() > 0) {
     memset(messageWiFiIn,0,sizeof(messageWiFiIn));
     memset(messageSerialIn,0,sizeof(messageSerialIn));
+    memset(messageWiFiOut,0,sizeof(messageWiFiOut));
+    memset(messageSerialOut,0,sizeof(messageSerialOut));
 
 #if DEBUG
     Serial.write("serial.availabile: ");
@@ -172,11 +176,9 @@ bool readMessages()
 void processMessages() {
   // check for commands to esp
   if (messageWiFiIn[0] != '\0' && processCommands(messageWiFiIn) == 2) {
-    memset(messageSerialOut,0,sizeof(messageSerialOut));
     strncpy(messageSerialOut, messageWiFiIn+5, MESSAGE_SIZE);
   }
   if (messageSerialIn[0] != '\0' && processCommands(messageSerialIn) == 2) {
-    memset(messageWiFiOut,0,sizeof(messageWiFiOut));
     strncpy(messageWiFiOut, messageSerialIn+5, MESSAGE_SIZE);
   }
 }
